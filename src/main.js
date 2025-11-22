@@ -5,6 +5,7 @@ import axios from 'axios'
 
 import App from './App.vue'
 import router from './router'
+import { setupI18n } from './i18n'
 import DayJS from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { authStore } from '@/stores/auth'
@@ -47,6 +48,10 @@ axiosInstanceAuth.interceptors.response.use(function (response) {
     return Promise.reject(error);
 });
 
+const i18n = setupI18n({
+    locale: 'en'
+})
+
 const app = createApp(App)
 const pinia = createPinia()
 const emitter = mitt()
@@ -58,6 +63,7 @@ app.use(pinia)
 app.use(router)
 app.mixin(VueHeadMixin)
 app.use(head)
+app.use(i18n)
 
 app.config.globalProperties.$api = { ...axiosInstance }
 app.config.globalProperties.$apiAuth = { ...axiosInstanceAuth }
